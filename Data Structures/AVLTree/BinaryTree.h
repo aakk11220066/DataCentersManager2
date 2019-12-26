@@ -18,7 +18,7 @@ protected:
         unsigned int height = 1;
     public:
         unsigned int subTreeSize=1; //size of subtree.  AVLTree only
-        int sum=0; //sum = sum of subtree.  AVLTree only //TODO: should this be int?
+        int sum = 0; //sum = sum of subtree.  AVLTree only //TODO: should this really be int?
         T data;
         BinaryTreeNode *left = nullptr, *right = nullptr;
 
