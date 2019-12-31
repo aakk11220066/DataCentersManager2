@@ -20,6 +20,7 @@ private:
     //replaces nodes of tree inorder with nodes pointed to by source
     BinarySearchTree<T> &inOrderCopy(const Array<typename BinaryTree<T>::BinaryTreeNode *> &source);
 
+    //conversion ctor from BinaryTree to BinarySearchTree
     explicit BinarySearchTree(const BinaryTree<T> &original);
 
     //----FRIENDS----
@@ -101,7 +102,7 @@ BinarySearchTree<T> BinarySearchTree<T>::merge(const BinarySearchTree &tree) {
     //inorder list of all elements in both trees
     Array<typename BinaryTree<T>::BinaryTreeNode *> allElements = myNodes.merge(hisNodes);
 
-    BinarySearchTree<T> output = BinaryTree<T>::almostCompleteTree(allElements.getSize());
+    BinarySearchTree<T> output = BinarySearchTree(BinaryTree<T>::almostCompleteTree(allElements.getSize()));
     output.inOrderCopy(allElements);
 
     return output;

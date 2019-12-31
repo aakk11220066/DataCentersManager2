@@ -16,12 +16,13 @@ private:
     typedef typename BinaryTree<T>::BinaryTreeNode *
             BinTreeNodePtr;
 
+    T &operatorSubscriptRecursive(typename BinaryTree<T>::BinaryTreeNode *root,
+                                  unsigned int index);
+
+    //node rotations
     static BinTreeNodePtr rotateRR(typename BinaryTree<T>::BinaryTreeNode &root);
-
     static BinTreeNodePtr rotateLL(typename BinaryTree<T>::BinaryTreeNode &root);
-
     static BinTreeNodePtr rotateRL(typename BinaryTree<T>::BinaryTreeNode &root);
-
     static BinTreeNodePtr rotateLR(typename BinaryTree<T>::BinaryTreeNode &root);
 
     //rebalance tree
@@ -77,6 +78,7 @@ public:
     //operator=
     AVLTree &operator=(const AVLTree &original) = default;
 
+    //conversion constructor from BinarySearchTree to AVLTree
     AVLTree(const BinarySearchTree<T> &original);
 
     //insert
@@ -86,6 +88,11 @@ public:
     /// \return number of elements in tree lesser than data
     /// O(logn) time
     unsigned int getRelativeIndex(const T& data) const;
+
+    /// \param index relative index of element to return
+    /// \return //opposite of getRelativeIndex - returns the element with given
+    /// index
+    T &operator[](unsigned int index);
 
     /// \param data: element to sum tree up to
     /// \return sum of all elements in tree lesser than data (and data itself)
@@ -339,6 +346,23 @@ int AVLTree<T>::getPartialSum(const T &data) const {
 
 template<typename T>
 AVLTree<T>::AVLTree(const BinarySearchTree<T> &original):BinarySearchTree<T>(original) {}
+
+template<typename T>
+T &AVLTree<T>::operator[](unsigned int index) {
+    return operatorSubscriptRecursive(this->root, index);
+}
+
+template<typename T>
+T &AVLTree<T>::operatorSubscriptRecursive(
+        typename BinaryTree<T>::BinaryTreeNode *root, unsigned int index) {
+
+    if (!root) throw DataManagerExceptions::ObjectUnfound();
+
+    unsigned int rootIndex = getRelativeIndex(root->data);
+    if (rootIndex == index) return root->data;
+    if (rootIndex > index) return operatorSubscriptRecursive(root->left, index);
+    return operatorSubscriptRecursive(root->right, index);
+}
 
 
 #endif //DATACENTERSMANAGER_AVLTREE_H

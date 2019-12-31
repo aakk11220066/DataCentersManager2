@@ -52,6 +52,11 @@ Public member functions:
         O(logn) time complexity (O(logn) to find the element, O(1) to obtain its index.  So could be less, if important)
         throws DataManagerExceptions::ObjectUnfound
 
+    operator[] - T& operator[](unsigned int index);
+        Inverse of getRelativeIndex, returns the element with relative index requested in argument.
+        O(logn) time complexity
+        throws DataManagerExceptions::ObjectUnfound
+
     merge - virtual BinarySearchTree merge(const BinarySearchTree& tree);
         Merges 2 trees into a single almost-complete binary search tree
         O(n) time complexity

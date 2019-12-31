@@ -64,7 +64,6 @@ int main() {
     }
 
     trees[0] = trees[0].merge(trees[1]);
-    trees[1] = trees[0].merge(trees[2]);
 
     cout << "Successfully merged 3i and 3i+1 trees, inorder printout of resultant tree:" << endl;
     auto inorder = trees[1].getInOrder();
@@ -72,6 +71,12 @@ int main() {
         cout << inorder[i] << ", ";
     }
     cout << "." << endl;
+
+    //operator[] test
+    unsigned int relativeIndexOfEleven = trees[2].getRelativeIndex(11);
+    cout << "The relative index of 11 in trees[2] is " << relativeIndexOfEleven << "." << endl;
+    cout << "The element with relative index " << relativeIndexOfEleven << " is " << trees[2][relativeIndexOfEleven]
+         << " and should be 11." << endl;
 
     delete[] trees;
 }
