@@ -1,12 +1,10 @@
 #include <iostream>
 #include "Data Structures/AVLTree/AVLTree.h"
-#include "Data Structures/Set.h"
-#include "Server.h"
-#include <assert.h>
 
 using std::cout;
 using std::endl;
 int main() {
+    /*
     //AVLTree sum, rank test (passed)
     AVLTree<int> tree; //instantiation success
     for (int i=1; i<10; ++i) tree.insert(i);
@@ -44,4 +42,36 @@ int main() {
         assert(servers[i].link.parent == &(servers[0].link)); //ensure find shortened all paths correctly
     }
     cout << "Passed union proper connections test." << endl;
+    delete[] sets;
+    delete[] servers;
+     */
+
+    //AVLTree Merge test
+    //init
+    const unsigned int NUMTREES = 3, MAXVAL = 10;
+    AVLTree<int> *trees = new AVLTree<int>[NUMTREES];
+    for (int i = 0; i < NUMTREES; ++i) trees[i] = AVLTree<int>();
+    for (int j = 0; j < NUMTREES; ++j) {
+        for (int i = 0; i < MAXVAL; ++i) trees[j].insert(NUMTREES * i + j);
+    }
+    cout << "Prepared trees with mod " << NUMTREES << " values going up to " << MAXVAL << ".  Trees contain:" << endl;
+    for (int j = 0; j < NUMTREES; ++j) {
+        cout << "tree number " << j << ": ";
+        for (int i = 0; i < trees[j].getInOrder().getSize(); ++i) {
+            cout << trees[j].getInOrder()[i] << ", ";
+        }
+        cout << endl;
+    }
+
+    trees[0] = trees[0].merge(trees[1]);
+    trees[1] = trees[0].merge(trees[2]);
+
+    cout << "Successfully merged 3i and 3i+1 trees, inorder printout of resultant tree:" << endl;
+    auto inorder = trees[1].getInOrder();
+    for (int i = 0; i < inorder.getSize(); ++i) {
+        cout << inorder[i] << ", ";
+    }
+    cout << "." << endl;
+
+    delete[] trees;
 }

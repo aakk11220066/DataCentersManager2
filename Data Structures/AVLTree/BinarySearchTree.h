@@ -12,6 +12,16 @@ class BinarySearchTree : public BinaryTree<T> {
 private:
     static void doNothing(typename BinaryTree<T>::BinaryTreeNode& target);
 
+    typename BinaryTree<T>::BinaryTreeNode *getInOrderCopyRecursive(
+            typename BinaryTree<T>::BinaryTreeNode *root,
+            Array<typename BinaryTree<T>::BinaryTreeNode *> source,
+            unsigned int *index);
+
+    //replaces nodes of tree inorder with nodes pointed to by source
+    BinarySearchTree<T> &inOrderCopy(const Array<typename BinaryTree<T>::BinaryTreeNode *> &source);
+
+    explicit BinarySearchTree(const BinaryTree<T> &original);
+
     //----FRIENDS----
     //to grant access to BinaryTreeNode from superclass
     template<typename U>
@@ -38,6 +48,10 @@ public:
 
     //find
     virtual T &find(const T &data) const;
+
+    //AVL TREE ONLY
+    //merge - merges 2 trees into a single almost-complete binary search tree
+    virtual BinarySearchTree merge(const BinarySearchTree &tree);
 };
 
 
@@ -79,6 +93,72 @@ typename BinaryTree<T>::BinaryTreeNode *BinarySearchTree<T>::findNodeOf(
 
 template<typename T>
 void BinarySearchTree<T>::doNothing(typename BinaryTree<T>::BinaryTreeNode &target) {}
+
+template<typename T>
+BinarySearchTree<T> BinarySearchTree<T>::merge(const BinarySearchTree &tree) {
+    Array<typename BinaryTree<T>::BinaryTreeNode *> myNodes = this->getNodesInOrder();
+    Array<typename BinaryTree<T>::BinaryTreeNode *> hisNodes = tree.getNodesInOrder();
+    //inorder list of all elements in both trees
+    Array<typename BinaryTree<T>::BinaryTreeNode *> allElements = myNodes.merge(hisNodes);
+
+    BinarySearchTree<T> output = BinaryTree<T>::almostCompleteTree(allElements.getSize());
+    output.inOrderCopy(allElements);
+
+    return output;
+}
+
+template<typename T>
+BinarySearchTree<T> &BinarySearchTree<T>::inOrderCopy(const Array<typename BinaryTree<T>::BinaryTreeNode *> &source) {
+    //unsigned int sourceSize = source.getSize();
+    //unsigned int thisSize = this->getSize();
+    //if (thisSize != sourceSize) throw DataManagerExceptions::IllegalSize();
+
+    unsigned int *index = new unsigned int;
+    *index = 0;
+    this->root = getInOrderCopyRecursive(this->root, source, index);
+    delete index;
+
+    this->updateHeight();
+    this->updateSum();
+    this->updateSubTreeSize();
+    return *this;
+}
+
+template<typename T>
+typename BinaryTree<T>::BinaryTreeNode *BinarySearchTree<T>::getInOrderCopyRecursive(
+        typename BinaryTree<T>::BinaryTreeNode *root,
+        Array<typename BinaryTree<T>::BinaryTreeNode *> source,
+        unsigned int *index) {
+
+    if (!root) return nullptr;
+
+    //handle left subtree
+    if (root->left) {
+        root->left = getInOrderCopyRecursive(root->left, source, index);
+    }
+
+    //handle root
+    unsigned int iterationIndex = *index;
+    /* replace root with source
+    source[iterationIndex] -> left = root->left;
+    source[iterationIndex] -> right = root->right;
+    */
+    //copy source into root
+    root->data = source[iterationIndex]->data;
+
+    ++(*index);
+
+    //handle right subtree
+    if (root->right) {
+        root->right = getInOrderCopyRecursive(root->right, source,
+                                              index); //source[iterationIndex] instead of root at first for replacement
+    }
+
+    return root; //source[iterationIndex] instead of root for replacement
+}
+
+template<typename T>
+BinarySearchTree<T>::BinarySearchTree(const BinaryTree<T> &original):BinaryTree<T>(original) {}
 
 
 #endif //DATASTRUCTURESWETHW1_BINARYSEARCHTREE_H

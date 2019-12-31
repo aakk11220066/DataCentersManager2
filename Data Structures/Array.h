@@ -35,6 +35,10 @@ public:
 
     //copies array to a newly allocated one.
     T *toCArray() const;
+
+    //merges 2 Arrays of pointers based on content of pointers, sorting
+    // smallest to largest
+    Array<T> merge(Array<T> source);
 };
 
 
@@ -82,6 +86,24 @@ T *Array<T>::toCArray() const {
         result[i] = (*this)[i];
     }
     return result;
+}
+
+template<typename T>
+Array<T> Array<T>::merge(Array<T> source) {
+    Array<T> output = Array(this->getSize() + source.getSize());
+    unsigned int index1 = 0, index2 = 0; //start at beginning of both Arrays
+    for (int i = 0; i < output.getSize(); ++i) {
+        if (index1 == this->getSize() ||
+            (index2 < source.getSize() &&
+             (*((*this)[index1]) > *(source[index2])))) {
+
+            output[i] = source[index2++];
+        } else {
+            output[i] = (*this)[index1++];
+        }
+    }
+
+    return output;
 }
 
 

@@ -52,8 +52,14 @@ Public member functions:
         O(logn) time complexity (O(logn) to find the element, O(1) to obtain its index.  So could be less, if important)
         throws DataManagerExceptions::ObjectUnfound
 
+    merge - virtual BinarySearchTree merge(const BinarySearchTree& tree);
+        Merges 2 trees into a single almost-complete binary search tree
+        O(n) time complexity
+        throws bad_alloc
+
 Dependencies:
     1. AVLTree assumes data type T will implement operator== and operator> in O(1) time complexity
-    2. AVLTree assumes data type T will implement copy constructor, operator=, and destructor in O(1) time complexity
+    *NEW* requires default constructor (with throwaway value) (required to use merge)
+    2. AVLTree assumes data type T will implement default constructor, copy constructor, operator=, and destructor in O(1) time complexity
     *NEW*
     3. AVLTree assumes data type T will implement operator+ (only for purposes of sums)

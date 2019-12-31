@@ -77,6 +77,8 @@ public:
     //operator=
     AVLTree &operator=(const AVLTree &original) = default;
 
+    AVLTree(const BinarySearchTree<T> &original);
+
     //insert
     void insert(const T& data);
 
@@ -334,6 +336,9 @@ int AVLTree<T>::getPartialSum(const T &data) const {
     this->find (data); //ensure data is actually in tree
     return getPartialSumRecursive(this->root, data);
 }
+
+template<typename T>
+AVLTree<T>::AVLTree(const BinarySearchTree<T> &original):BinarySearchTree<T>(original) {}
 
 
 #endif //DATACENTERSMANAGER_AVLTREE_H
