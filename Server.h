@@ -12,14 +12,14 @@ class DataCenter;
 class Server : Set::SetNode { //Roi's version
 private:
 
-    Set &getContainingDataCenter();
+    DataCenter &getContainingDataCenter();
 
 protected: //DEBUGGING NOTE: Make public to be able to run the test currently in main
     int id;
     int traffic;
 public:
-    explicit Server(Set &data_center, int given_id = 0, int given_traffic = 0) : Set::SetNode(data_center),
-                                                                                 id(given_id), traffic(given_traffic) {
+    explicit Server(DataCenter &data_center, int given_id = 0, int given_traffic = 0) :
+            Set::SetNode(reinterpret_cast<Set &>(data_center)), id(given_id), traffic(given_traffic) {
     }
     //destructor
     virtual ~Server()= default;
@@ -40,8 +40,8 @@ public:
     }
 };
 
-Set &Server::getContainingDataCenter() {
-    return Set::find(*this);
+DataCenter &Server::getContainingDataCenter() {
+    return reinterpret_cast<DataCenter &>(Set::find(*this));
 }
 
 
