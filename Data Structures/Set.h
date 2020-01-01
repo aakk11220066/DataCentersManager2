@@ -5,7 +5,6 @@
 #ifndef DATACENTERSMANAGER2_SET_H
 #define DATACENTERSMANAGER2_SET_H
 
-template<typename T>
 class Set {
 public:
     class SetNode {
@@ -17,6 +16,9 @@ public:
 
         //returns root of node, and updates parent to root
         SetNode *findRoot();
+
+    public:
+        SetNode(Set &container);
     };
 
     //find - returns set in which SetNode seeker is contained
@@ -25,6 +27,8 @@ public:
     //Union - unites sets into larger set (modifying larger set and
     // destroying smaller set)
     static Set &setsUnion(SetNode &node1, SetNode &node2);
+
+    Set &setsUnion(const Set &otherSet);
 
     virtual bool operator==(const Set &rhs) const; //comparison by memory address
 
@@ -44,18 +48,15 @@ private:
 //-----IMPLEMENTATIONS-------
 
 
-template<typename T>
-bool Set<T>::operator==(const Set &rhs) const {
+bool Set::operator==(const Set &rhs) const {
     return this->root == rhs.root; //comparison by memory address of root
 }
 
-template<typename T>
-bool Set<T>::operator<(const Set &rhs) const {
+bool Set::operator<(const Set &rhs) const {
     return sizeNodes < rhs.sizeNodes;
 }
 
-template<typename T>
-void Set<T>::insert(Set::SetNode &newComer) {
+void Set::insert(Set::SetNode &newComer) {
     if (!root) {
         root = &newComer;
         newComer.parent = nullptr;
@@ -67,19 +68,20 @@ void Set<T>::insert(Set::SetNode &newComer) {
     ++sizeNodes;
 }
 
-template<typename T>
-typename Set<T>::SetNode *Set<T>::SetNode::findRoot() {
+Set::SetNode *Set::SetNode::findRoot() {
     if (parent == nullptr) return this;
     return parent = parent->findRoot();
 }
 
-template<typename T>
-Set<T> &Set<T>::find(Set<T>::SetNode &seeker) {
+Set::SetNode::SetNode(Set &container) {
+    container.insert(*this);
+}
+
+Set &Set::find(Set::SetNode &seeker) {
     return *(seeker.findRoot()->setContainer);
 }
 
-template<typename T>
-Set<T> &Set<T>::setsUnion(Set<T>::SetNode &node1, Set<T>::SetNode &node2) {
+Set &Set::setsUnion(Set::SetNode &node1, Set::SetNode &node2) {
     //get containing sets of nodes
     Set &set1 = find(node1);
     Set &set2 = find(node2);
@@ -96,6 +98,10 @@ Set<T> &Set<T>::setsUnion(Set<T>::SetNode &node1, Set<T>::SetNode &node2) {
     smallSet.root = nullptr;
     smallSet.~Set();
     return bigSet;
+}
+
+Set &Set::setsUnion(const Set &otherSet) {
+    return setsUnion(*(this->root), *(otherSet.root));
 }
 
 

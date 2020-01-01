@@ -6,20 +6,21 @@
 #define DATACENTERSMANAGER2_SERVER_H
 
 #include "Data Structures/Set.h"
-/*
-class Server { //TODO:INCOMPLETE!
-public: //DEBUGGING NOTE: Make public to be able to run the test currently in main
-    unsigned int traffic = 0;
-    Set<Server>::SetNode link;
-};
-*/
 
-class Server { //Roi's version
+class DataCenter;
+
+class Server : Set::SetNode { //Roi's version
+private:
+
+    Set &getContainingDataCenter();
+
 protected: //DEBUGGING NOTE: Make public to be able to run the test currently in main
     int id;
     int traffic;
 public:
-    explicit Server(int given_id = 0, int given_traffic = 0): id(given_id), traffic(given_traffic) {}
+    explicit Server(Set &data_center, int given_id = 0, int given_traffic = 0) : Set::SetNode(data_center),
+                                                                                 id(given_id), traffic(given_traffic) {
+    }
     //destructor
     virtual ~Server()= default;
     void setTraffic(int given_traffic) { traffic = given_traffic;}
@@ -38,6 +39,10 @@ public:
         return false;
     }
 };
+
+Set &Server::getContainingDataCenter() {
+    return Set::find(*this);
+}
 
 
 class ServerAux: public Server {

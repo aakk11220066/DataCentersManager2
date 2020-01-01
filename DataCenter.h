@@ -8,17 +8,18 @@
 #include "Server.h"
 #include "Data Structures/Set.h"
 
-class DataCenter { //Roi's version
+class DataCenter : public Set { //Roi's version
+private:
+    DataCenter &merge(DataCenter &other);
 public: //DEBUGGING NOTE: Make public to be able to run the test currently in main
     int id;
     int servers_num;
     AVLTree<Server> servers_tree;
-    Set<DataCenter>::SetNode link;
     enum DataCenterError{SUCCESS = 0, FAILURE = -1, ALLOCATION_ERROR = -2, INVALID_INPUT = -3};
 public:
     //ctor
-    explicit DataCenter(int given_id = 0): id(given_id), servers_num(0) {}
-    //
+    explicit DataCenter(int given_id = 0) : Set(Set()), id(given_id), servers_num(0) {}
+
     void IncrementSize() {servers_num++;}
     DataCenterError AddServer(int given_id){
         //check in outer layers that the id is correct
@@ -72,5 +73,11 @@ public:
      //
 
 };
+
+DataCenter &DataCenter::merge(DataCenter &other) {
+    servers_tree = servers_tree.merge(other.servers_tree);
+    this->setsUnion(other);
+    return *this;
+}
 
 #endif //DATACENTERSMANAGER2_DATACENTER_H
