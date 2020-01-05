@@ -19,7 +19,7 @@ public:
     void setHead(int given_head) { head = given_head ;}
     void setSize(int given_size) {size = given_size;}
 };
-
+//
 
 class UnionFind{
 private:
