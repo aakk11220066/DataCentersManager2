@@ -6,9 +6,8 @@
 #define DATACENTERSMANAGER2_DATACENTER_H
 #include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
-#include "Data Structures/Set.h"
 
-class DataCenter : public Set { //Roi's version
+class DataCenter { //Roi's version
 private:
     DataCenter &merge(DataCenter &other);
 public: //DEBUGGING NOTE: Make public to be able to run the test currently in main
@@ -18,7 +17,7 @@ public: //DEBUGGING NOTE: Make public to be able to run the test currently in ma
     enum DataCenterError{SUCCESS = 0, FAILURE = -1, ALLOCATION_ERROR = -2, INVALID_INPUT = -3};
 public:
     //ctor
-    explicit DataCenter(int given_id = 0) : Set(Set()), id(given_id), servers_num(0) {}
+    explicit DataCenter(int given_id = 0) : id(given_id), servers_num(0) {}
 
     void IncrementSize() {servers_num++;}
     DataCenterError AddServer(int given_id){
@@ -74,10 +73,5 @@ public:
 
 };
 
-DataCenter &DataCenter::merge(DataCenter &other) {
-    servers_tree = servers_tree.merge(other.servers_tree);
-    this->setsUnion(other);
-    return *this;
-}
 
 #endif //DATACENTERSMANAGER2_DATACENTER_H

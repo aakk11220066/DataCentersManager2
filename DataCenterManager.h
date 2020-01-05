@@ -7,13 +7,11 @@
 
 #include "DataCenter.h"
 #include "Data Structures/AVLTree/AVLTree.h"
-#include "Data Structures/HashTable"
 
 class DataCenterManager {
 private:
     Array<DataCenter> dataCenters;
     AVLTree<Server> serversTraffic;
-    HashTable <Server> servers;
 
 public:
     void MergeDataCenters(void *DS, int dataCenter1, int dataCenter2);

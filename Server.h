@@ -5,21 +5,23 @@
 #ifndef DATACENTERSMANAGER2_SERVER_H
 #define DATACENTERSMANAGER2_SERVER_H
 
-#include "Data Structures/Set.h"
+#include "UnionFind/UnionFind.h"
 
 class DataCenter;
 
-class Server : Set::SetNode { //Roi's version
+class Server { //Roi's version
 private:
 
     DataCenter &getContainingDataCenter();
+
+    Set<int>::SetNode link;
 
 protected: //DEBUGGING NOTE: Make public to be able to run the test currently in main
     int id;
     int traffic;
 public:
-    explicit Server(DataCenter &data_center, int given_id = 0, int given_traffic = 0) :
-            Set::SetNode(reinterpret_cast<Set &>(data_center)), id(given_id), traffic(given_traffic) {
+    explicit Server(UnionFind &uf, Set<int> &data_center_set, int given_id = 0, int given_traffic = 0) : link(
+            uf.addElement(data_center_set)), id(given_id), traffic(given_traffic) {
     }
     //destructor
     virtual ~Server()= default;
