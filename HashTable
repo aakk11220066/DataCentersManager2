@@ -67,17 +67,16 @@ public:
         table_array = new_arr;
     }
 
-    ServerAux find(const ServerAux& serverAux) const{
-        if (serverAux.getID() <= 0) return  0;
+    ServerAux find(ServerAux& given_sa) const{
         std::random_device rd;
         std::mt19937 engine(rd());
         std::uniform_int_distribution<int> dist(0, array_size);
         int cell = dist(engine);
         int remainder = cell;
-        ServerAux sa_temp;
+        ServerAux sa_temp(0);
         do{
             try {
-                sa_temp = table_array[cell%array_size].find(serverAux);
+                sa_temp = table_array[cell%array_size].find(given_sa);
                 return sa_temp;
             }
             catch (DataManagerExceptions::ObjectUnfound &e){

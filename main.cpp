@@ -5,6 +5,8 @@
 
 using std::cout;
 using std::endl;
+
+#include "HashTable"
 int main() {
     /*
     //AVLTree sum, rank test (passed)
@@ -84,5 +86,7 @@ int main() {
     delete[] trees;
     */
 
-    Server(DataCenter());
+    //Server(DataCenter());
+    HashTable ht;
+    ht.find(6);
 }

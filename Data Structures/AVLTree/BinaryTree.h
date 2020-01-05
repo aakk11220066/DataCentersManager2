@@ -335,7 +335,7 @@ void BinaryTree<T>::updateHeightRecursive(typename BinaryTree::BinaryTreeNode *r
     updateHeightRecursive(root->right);
     root->getHeight();
 }
-
+/*
 template<typename T>
 int BinaryTree<T>::updateSumRecursive(typename BinaryTree::BinaryTreeNode *root) {
     //postorder
@@ -355,7 +355,7 @@ unsigned int BinaryTree<T>::updateSubTreeSizeRecursive(typename BinaryTree::Bina
                                updateSubTreeSizeRecursive(root->left) +
                                updateSubTreeSizeRecursive(root->right);
 }
-
+*/
 template<typename T>
 BinaryTree<T>::BinaryTree(const BinaryTree &original) :
         root(new BinaryTreeNode(*(original.root))) {}

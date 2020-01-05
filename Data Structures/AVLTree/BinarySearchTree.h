@@ -120,7 +120,7 @@ BinarySearchTree<T> &BinarySearchTree<T>::inOrderCopy(const Array<typename Binar
     delete index;
 
     this->updateHeight();
-    this->updateSum();
+    //this->updateSum();
     this->updateSubTreeSize();
     return *this;
 }
