@@ -20,7 +20,7 @@ public:
     void setSize(int given_size) {size = given_size;}
 };
 
-//
+
 class UnionFind{
 private:
     UF_Node* groups_array;
