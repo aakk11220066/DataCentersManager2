@@ -9,21 +9,23 @@
 
 class DataCenter;
 
-class Server{ //Roi's version
+class Server : Set::SetNode { //Roi's version
+private:
+
+    DataCenter &getContainingDataCenter();
+
 protected: //DEBUGGING NOTE: Make public to be able to run the test currently in main
     int id;
     int traffic;
-    int data_center_id;
 public:
-    explicit Server(int given_id = 0, int given_traffic = 0, int dc_id = 0) :
-           id(given_id), traffic(given_traffic), data_center_id(dc_id) {
+    explicit Server(DataCenter &data_center, int given_id = 0, int given_traffic = 0) :
+            Set::SetNode(reinterpret_cast<Set &>(data_center)), id(given_id), traffic(given_traffic) {
     }
     //destructor
     virtual ~Server()= default;
     void setTraffic(int given_traffic) { traffic = given_traffic;}
     int getTraffic() const {return traffic;}
     int getID() const {return id;}
-    int getDCID() const { return  data_center_id;}
     //operators
     bool operator==(const Server &server) const {
         return (server.id == id);
@@ -38,6 +40,9 @@ public:
     }
 };
 
+DataCenter &Server::getContainingDataCenter() {
+    return reinterpret_cast<DataCenter &>(Set::find(*this));
+}
 
 
 class ServerAux: public Server {
@@ -48,7 +53,7 @@ public:
     }
 
 public:
-    explicit ServerAux(int given_id = 0, int given_traffic = 0, int dc_id = 0): Server(given_id,given_traffic, dc_id){};
+    explicit ServerAux(int given_id = 0, int given_traffic = 0): Server(given_id,given_traffic){};
 };
 
 #endif //DATACENTERSMANAGER2_SERVER_H

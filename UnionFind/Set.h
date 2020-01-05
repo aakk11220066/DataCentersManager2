@@ -5,6 +5,7 @@
 #ifndef DATACENTERSMANAGER2_SET_H
 #define DATACENTERSMANAGER2_SET_H
 
+template<class T>
 class Set {
 public:
     class SetNode {
@@ -18,11 +19,21 @@ public:
         SetNode *findRoot();
 
     public:
+        //ctor
         SetNode(Set &container);
+
+        //copy ctor
+        SetNode(SetNode &original) = default;
     };
 
+    //ctor
+    Set(const T &data) : data(data) {}
+
+    //operator=
+    Set &operator=(const Set &original);
+
     //find - returns set in which SetNode seeker is contained
-    static Set &find(SetNode &seeker);
+    static Set<T> &find(SetNode &seeker);
 
     //Union - unites sets into larger set (modifying larger set and
     // destroying smaller set)
@@ -33,12 +44,18 @@ public:
     virtual bool operator==(const Set &rhs) const; //comparison by memory address
 
     //insert
-    virtual void insert(SetNode &newComer);
+    virtual SetNode &insert(SetNode &newComer);
 
 private:
     unsigned int sizeNodes = 1;
 
     SetNode *root;
+
+    T &data;
+public:
+    T &getData() const;
+
+private:
 
     //relation by size
     bool operator<(const Set &rhs) const;
@@ -47,16 +64,18 @@ private:
 
 //-----IMPLEMENTATIONS-------
 
-
-bool Set::operator==(const Set &rhs) const {
+template<class T>
+bool Set<T>::operator==(const Set<T> &rhs) const {
     return this->root == rhs.root; //comparison by memory address of root
 }
 
-bool Set::operator<(const Set &rhs) const {
+template<class T>
+bool Set<T>::operator<(const Set<T> &rhs) const {
     return sizeNodes < rhs.sizeNodes;
 }
 
-void Set::insert(Set::SetNode &newComer) {
+template<class T>
+typename Set<T>::SetNode &Set<T>::insert(Set<T>::SetNode &newComer) {
     if (!root) {
         root = &newComer;
         newComer.parent = nullptr;
@@ -66,22 +85,27 @@ void Set::insert(Set::SetNode &newComer) {
         newComer.setContainer = nullptr;
     }
     ++sizeNodes;
+    return newComer;
 }
 
-Set::SetNode *Set::SetNode::findRoot() {
+template<class T>
+typename Set<T>::SetNode *Set<T>::SetNode::findRoot() {
     if (parent == nullptr) return this;
     return parent = parent->findRoot();
 }
 
-Set::SetNode::SetNode(Set &container) {
+template<class T>
+Set<T>::SetNode::SetNode(Set<T> &container) {
     container.insert(*this);
 }
 
-Set &Set::find(Set::SetNode &seeker) {
+template<class T>
+Set<T> &Set<T>::find(Set<T>::SetNode &seeker) {
     return *(seeker.findRoot()->setContainer);
 }
 
-Set &Set::setsUnion(Set::SetNode &node1, Set::SetNode &node2) {
+template<class T>
+Set<T> &Set<T>::setsUnion(Set<T>::SetNode &node1, Set<T>::SetNode &node2) {
     //get containing sets of nodes
     Set &set1 = find(node1);
     Set &set2 = find(node2);
@@ -100,8 +124,22 @@ Set &Set::setsUnion(Set::SetNode &node1, Set::SetNode &node2) {
     return bigSet;
 }
 
-Set &Set::setsUnion(const Set &otherSet) {
+template<class T>
+Set<T> &Set<T>::setsUnion(const Set &otherSet) {
     return setsUnion(*(this->root), *(otherSet.root));
+}
+
+template<class T>
+T &Set<T>::getData() const {
+    return data;
+}
+
+template<class T>
+Set<T> &Set<T>::operator=(const Set &original) {
+    sizeNodes = original.sizeNodes;
+    root = original.root;
+    data = original.data;
+    return *this;
 }
 
 
