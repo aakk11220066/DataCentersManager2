@@ -5,11 +5,10 @@
 #ifndef DATACENTERSMANAGER2_SERVER_H
 #define DATACENTERSMANAGER2_SERVER_H
 
-#include "Data Structures/Set.h"
 
 class DataCenter;
 
-class Server : Set::SetNode { //Roi's version
+class Server { //Roi's version
 private:
 
     DataCenter &getContainingDataCenter();
@@ -18,8 +17,8 @@ protected: //DEBUGGING NOTE: Make public to be able to run the test currently in
     int id;
     int traffic;
 public:
-    explicit Server(DataCenter &data_center, int given_id = 0, int given_traffic = 0) :
-            Set::SetNode(reinterpret_cast<Set &>(data_center)), id(given_id), traffic(given_traffic) {
+    explicit Server(int given_id = 0, int given_traffic = 0) :
+            id(given_id), traffic(given_traffic) {
     }
     //destructor
     virtual ~Server()= default;
@@ -38,11 +37,11 @@ public:
         }
         return false;
     }
-};
 
-DataCenter &Server::getContainingDataCenter() {
-    return reinterpret_cast<DataCenter &>(Set::find(*this));
-}
+    int operator+(const Server &server2) const {
+        return traffic + server2.traffic;
+    }
+};
 
 
 class ServerAux: public Server {

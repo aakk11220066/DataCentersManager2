@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
-#include "DataCenter.h"
 
 using std::cout;
 using std::endl;
@@ -86,7 +85,5 @@ int main() {
     delete[] trees;
     */
 
-    //Server(DataCenter());
-    HashTable ht;
-    ht.find(6);
+    AVLTree<Server> tree;
 }
