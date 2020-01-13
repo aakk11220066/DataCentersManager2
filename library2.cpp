@@ -14,7 +14,7 @@ StatusType MergeDataCenters(void *DS, int dataCenter1, int dataCenter2) {
     int n = ((DataCenterManager *) DS)->getDataCentersSize();
     if (dataCenter2 <= 0 || dataCenter2 > n || dataCenter1 <= 0 || dataCenter1 > n) return INVALID_INPUT;
     try {
-        return (StatusType) ((DataCenterManager *) DS)->MergeDataCeneters(dataCenter1, dataCenter2);
+        return (StatusType) ((DataCenterManager *) DS)->MergeDataCenters(dataCenter1, dataCenter2);
     } catch (std::bad_alloc) {
         return ALLOCATION_ERROR;
     }

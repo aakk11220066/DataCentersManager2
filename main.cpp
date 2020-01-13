@@ -101,4 +101,6 @@ int main() {
     //DataCenterManager manager(20);
     */
 DataCenterManager dcm(5);
+dcm.AddServer(3,4);
+int a =5;
 }
