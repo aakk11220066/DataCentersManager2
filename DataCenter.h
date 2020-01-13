@@ -7,11 +7,18 @@
 #include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
 
+//ROI: please review merge function to make sure it updates everything that needs to be updated when DataCenters are united.
+// Note that calling merge modifies the original DataCenter!  (Instead of returning a new one)
+
+
 class DataCenter { //Roi's version
-private:
-    DataCenter &merge(DataCenter &other);
-public: //DEBUGGING NOTE: Make public to be able to run the test currently in main
+public:
+    DataCenter &merge(DataCenter &other);  //AKIVA: made this public
+
     int id;
+
+    void setID(int id); //AKIVA
+
     int servers_num;
     AVLTree<Server> servers_tree;
     enum DataCenterError{SUCCESS = 0, FAILURE = -1, ALLOCATION_ERROR = -2, INVALID_INPUT = -3};
@@ -20,6 +27,9 @@ public:
     explicit DataCenter(int given_id = 0) : id(given_id), servers_num(0) {}
 
     void IncrementSize() {servers_num++;}
+
+    void DecrementSize() { servers_num--; }//AKIVA
+
     DataCenterError AddServer(int given_id){
         //check in outer layers that the id is correct
         //check in outer layer that id isn;t already inside HashTable
@@ -75,8 +85,13 @@ public:
 
 DataCenter &DataCenter::merge(DataCenter &other) {
     servers_tree = servers_tree.merge(other.servers_tree);
-    //this->setsUnion(other); //TODO
+    servers_num += other.servers_num;
+    //TODO: update anything else in DataCenter that needs to be updated in a merge
     return *this;
+}
+
+void DataCenter::setID(int id) {
+    DataCenter::id = id;
 }
 
 #endif //DATACENTERSMANAGER2_DATACENTER_H

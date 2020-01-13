@@ -11,20 +11,21 @@
 #include "Server.h"
 #include "Data Structures/UnionFind.h"
 // we may need to wrap up some lines with try-catch in order to handling allocation errors
+
 //we may also need to verify that the conversion from aux_server to server slices the fields correctly.
-//UF section is verified..
-//AVL rank tree needs to support abstract_datatypes, it fails with the servers
-//we need to implement +operator for server
+//AKIVA: REPLY: didn't understand this...
 
 //NOTE: HT doesn't throw "NotFound" error, in such case it return AuxServer with (illegal) id which i've set to 0).
+//AKIVA: REPLY: when?
 
 //now all that's left is handling with tree's enhancements, including merging 2 datacenters via empty AVL tree.
+//AKIVA: REPLY: didn't understand this...
 
 class DataCenterManager {
 private:
     int dataCentersSize;
     UnionFind dataCentersUF;
-    DataCenter* dataCentersArray;
+    DataCenter *dataCentersArray; //Array<DataCenter> would be better...
     HashTable serversHT;
     AVLTree<Server> serversTree;
     enum DataCenterManagerError{SUCCESS = 0, FAILURE = -1, ALLOCATION_ERROR = -2, INVALID_INPUT = -3};
@@ -45,7 +46,8 @@ public:
        int dc2_head = dataCentersUF.find(dataCenter2);
        //try block to catch allocation error
        try {
-           dataCentersArray[dc1_head].merge(dc2_head);
+           dataCentersArray[dc1_head].merge(dataCentersArray[dc2_head]);
+           dataCentersUF.unite(dataCenter1, dataCenter2); //AKIVA
            return SUCCESS;
        }
        catch(DataManagerExceptions::Exceptions &e){
@@ -55,7 +57,7 @@ public:
    DataCenterManagerError AddServer(int DataCenterID, int ServerID){
        if (DataCenterID > dataCentersSize) return INVALID_INPUT;
        int dc_head = dataCentersUF.find(DataCenterID);
-       ServerAux sa_temp(ServerID,0,dc_head);
+       ServerAux sa_temp(ServerID, 0); //AKIVA: removed dc_head argument (why was that there?)
        if (serversHT.find(sa_temp).getID() == 0){
            return FAILURE;
        }
@@ -72,7 +74,8 @@ public:
            return FAILURE;
        }
        serversHT.remove(sa_result);
-       int server_dc_id = sa_result.getDCID();
+       //int server_dc_id = sa_result.getDCID();
+       int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
        dataCentersArray[dc_head].DecrementSize();
        if (sa_result.getTraffic() > 0){
@@ -89,7 +92,8 @@ public:
        if (sa_result.getID() == 0){
            return FAILURE;
        }
-       int server_dc_id = sa_result.getDCID();
+       //int server_dc_id = sa_result.getDCID();
+       int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
        dataCentersArray[dc_head].SetTraffic(ServerID,trafficID);
        serversTree.remove(sa_result);
@@ -100,42 +104,28 @@ public:
    DataCenterManagerError SumHighestTrafficServers(int dataCenterID, int k, int *traffic){
        //check variables validity...
        if (dataCenterID > dataCentersSize) return INVALID_INPUT;
-       if (dataCenterID == 0){
+       if (dataCenterID == 0) {
            //copied from the respective function in DataCenter
 
-           //if (k > servers_num) return FAILURE;
-           //int tree_size = servers_tree.getTreeSize();
-           //Server max_server = servers_tree.getMaxNode();
-           //if (k >= tree_size) {
-           //    *traffic = servers_tree.getPartialSum(max_server);
-           //    return SUCCESS;
-           //}
-           //else{
-           //    k = tree_size - k;
-           //    Server kth_server = servers_tree.getKthNode();
-           //    *traffic = servers_tree.getPartialSum(max_server) - servers_tree.getPartialSum(kth_server);
-
+           if (k > dataCentersSize) return FAILURE; //AKIVA: replaced num_servers with dataCenterSize
+           int tree_size = serversTree.getTreeSize(); //AKIVA: replaced servers_tree with serversTree (including later mentions in this function)
+           Server max_server = serversTree[tree_size]; //AKIVA: replaced getMaxNode with [tree_size]
+           if (k >= tree_size) {
+               *traffic = serversTree.getPartialSum(max_server);
+               return SUCCESS;
+           } else {
+               k = tree_size - k;
+               Server kth_server = serversTree[k]; //AKIVA: replaced getKthNode with operator[]
+               *traffic = serversTree.getPartialSum(max_server) - serversTree.getPartialSum(kth_server);
+           }
        }
        else{
            //check no negative numbers sneak in here
            int dc_head = dataCentersUF.find(dataCenterID);
            dataCentersArray[dc_head].SumHighestTrafficServers(k, traffic);
        }
-       return SUCCESS;
-
+       return SUCCESS; //FIXME: should this still be here?  Are there any more tests we need to run?
    }
 };
-
-
-
-/*
-public:
-    void MergeDataCenters(void *DS, int dataCenter1, int dataCenter2);
-};
-
-void DataCenterManager::MergeDataCenters(void *DS, int dataCenter1, int dataCenter2) {
-    dataCenters[dataCenter1] = dataCenters[dataCenter1].merge(dataCenters[dataCenter2]);
-}
-*/
 
 #endif //DATACENTERSMANAGER2_DATACENTERMANAGER_H

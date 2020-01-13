@@ -101,6 +101,9 @@ public:
 
     //remove
     void remove(const T& data);
+
+    /// \return number of elements in tree
+    int getTreeSize();
 };
 
 
@@ -362,6 +365,11 @@ T &AVLTree<T>::operatorSubscriptRecursive(
     if (rootIndex == index) return root->data;
     if (rootIndex > index) return operatorSubscriptRecursive(root->left, index);
     return operatorSubscriptRecursive(root->right, index);
+}
+
+template<typename T>
+int AVLTree<T>::getTreeSize() {
+    return this->getSize();
 }
 
 

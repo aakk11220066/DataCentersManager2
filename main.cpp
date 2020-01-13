@@ -1,11 +1,11 @@
-#include <iostream>
+
 #include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
+#include "DataCenterManager.h"
 
-using std::cout;
-using std::endl;
+//using std::cout;
+//using std::endl;
 
-#include "HashTable"
 int main() {
     /*
     //AVLTree sum, rank test (passed)
@@ -86,4 +86,7 @@ int main() {
     */
 
     AVLTree<Server> tree;
+
+    //------DataCenterManager initialization test---------
+    DataCenterManager manager(20);
 }
