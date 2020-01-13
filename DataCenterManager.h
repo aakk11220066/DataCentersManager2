@@ -91,7 +91,7 @@ public:
        //int server_dc_id = sa_result.getDCID();
        int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
-        dataCentersArray[dc_head].SetTraffic(ServerID, traffic);
+        dataCentersArray[dc_head].SetTraffic(ServerID, traffic, sa_temp.getTraffic());
        serversTree.remove(sa_result);
        serversTree.insert(sa_result);
        return SUCCESS;
