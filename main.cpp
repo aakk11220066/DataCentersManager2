@@ -2,7 +2,7 @@
 #include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
 #include "DataCenterManager.h"
-
+#include "Data Structures/UnionFind.h"
 //using std::cout;
 //using std::endl;
 
@@ -100,7 +100,21 @@ int main() {
     //------DataCenterManager initialization test---------
     //DataCenterManager manager(20);
     */
-DataCenterManager dcm(5);
-dcm.AddServer(3,4);
+
+//DataCenterManager dcm(5);
+//int res = dcm.AddServer(2,4);
+//printf("it is %d\n", res);
+    //res = dcm.AddServer(3,4);
+    //printf("it is %d\n", res);
+    //res = dcm.RemoveServer(3);
+    //printf("result is %d\n", res);
+    //res = dcm.SetTraffic(4,7);
+    //printf("result now is %d", res);
+    UnionFind uf(5);
+    int res1 = uf.find(0);
+    printf("res1 is %d\n", res1);
+    DataCenterManager dcm(5);
+    //int res = dcm.AddServer(2,4);
 int a =5;
+
 }

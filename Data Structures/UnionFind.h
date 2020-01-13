@@ -12,8 +12,7 @@ private:
     int head;
     int size;
 public:
-    UF_Node()= default;
-    ~UF_Node()= default;
+    explicit UF_Node(int given_head = 0, int given_size = 0): head(given_head), size(given_size){};
     int getHead() const {return head;}
     int getSize() const {return size;}
     void setHead(int given_head) { head = given_head ;}
@@ -27,7 +26,7 @@ private:
 public:
     explicit UnionFind(int size) {
         groups_array = new UF_Node[size];
-        for(int i=1; i<=size; i++)	{
+        for(int i=0; i<size; i++)	{
             groups_array[i].setHead(i);
             groups_array[i].setSize(1);
         }
