@@ -68,22 +68,21 @@ public:
 
     DataCenterError SumHighestTrafficServers(int k, int *traffic){
      //check k> 0
-     //if (k > servers_num) return FAILURE;
-     //int tree_size = servers_tree.getTreeSize();
-     //Server max_server = servers_tree.getMaxNode();
-     //if (k >= tree_size) {
-     //    *traffic = servers_tree.getPartialSum(max_server);
-     //    return SUCCESS;
-     //}
-     //else{
-     //    k = tree_size - k;
-     //    Server kth_server = servers_tree.getKthNode();
-     //    *traffic = servers_tree.getPartialSum(max_server) - servers_tree.getPartialSum(kth_server);
+        if (k > servers_num) return FAILURE;
+        int tree_size = servers_tree.getTreeSize();
+        Server max_server = servers_tree[tree_size];
+        if (k >= tree_size) {
+            *traffic = servers_tree.getPartialSum(max_server);
+            return SUCCESS;
+        } else {
+            k = tree_size - k;
+            Server kth_server = servers_tree[k];
+            *traffic = servers_tree.getPartialSum(max_server) - servers_tree.getPartialSum(kth_server);
          return SUCCESS;
      }
-     //
 
-};
+
+    };
 
 DataCenter &DataCenter::merge(DataCenter &other) {
     servers_tree = servers_tree.merge(other.servers_tree);

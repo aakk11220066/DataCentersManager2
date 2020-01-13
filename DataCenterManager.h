@@ -14,7 +14,7 @@
 
 class DataCenterManager {
 private:
-    int dataCentersSize;
+    const int dataCentersSize;
 public:
     int getDataCentersSize() const;
 
