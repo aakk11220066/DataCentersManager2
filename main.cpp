@@ -2,10 +2,10 @@
 #include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
 #include "DataCenterManager.h"
-
+#include "Data Structures/UnionFind.h"
 //using std::cout;
 //using std::endl;
-
+#include "library2.h"
 int main() {
     /*
     //AVLTree sum, rank test (passed)
@@ -84,23 +84,43 @@ int main() {
 
     delete[] trees;
     */
-/*
-    DataCenter dc1(1);
+
+    //DataCenter dc1(1);
     //DataCenter dc2(2);
-    dc1.AddServer(6);
-    dc1.SetTraffic(6,6, 0);
-    dc1.AddServer(7);
-    dc1.SetTraffic(7,7, 0);
-    dc1.AddServer(8);
-    dc1.SetTraffic(8,8, 0);
+    //dc1.AddServer(6);
+    //dc1.SetTraffic(6,6, 0);
+    //dc1.AddServer(7);
+    //dc1.SetTraffic(7,7, 0);
+    //dc1.AddServer(8);
+    //dc1.SetTraffic(8,8, 0);
     //dc1.merge(dc2);
-    int tr_res;
-    dc1.SumHighestTrafficServers(1, &tr_res);
-    printf("tr_res is %d", tr_res);
+    //int tr_res;
+    //dc1.SumHighestTrafficServers(1, &tr_res);
+    //printf("tr_res is %d", tr_res);
     //------DataCenterManager initialization test---------
     //DataCenterManager manager(20);
-    */
+
+/*
 DataCenterManager dcm(5);
-dcm.AddServer(3,4);
-int a =5;
+int res = dcm.AddServer(2,4);
+printf("it is %d\n", res);
+    res = dcm.AddServer(3,4);
+    printf("it is %d\n", res);
+    res = dcm.RemoveServer(3);
+    printf("result is %d\n", res);
+    res = dcm.SetTraffic(4,7);
+    printf("result now is %d\n", res);
+    res = dcm.RemoveServer(4);
+    printf("res please be %d\n", res);
+    //UnionFind uf(5);
+    //int res1 = uf.find(0);
+    //printf("res1 is %d\n", res1);
+    //DataCenterManager dcm(5);
+    //int res = dcm.AddServer(2,4);
+    */
+
+//int a =5;
+
+
+
 }

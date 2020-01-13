@@ -30,12 +30,13 @@ public:
 public:
    explicit DataCenterManager(int size): dataCentersSize(size), dataCentersUF(size){
        dataCentersArray = new DataCenter[size];
-       for (int i =1; i <= size; i++){
+       for (int i =0; i < size; i++){
            dataCentersArray[i].setID(i);
        }
 
-       for (int i = 1; i<=size; i++){
+       for (int i = 0; i<size; i++){
            printf("id is %d\n", dataCentersArray[i].id);
+           //printf("temp res is %d\n", dataCentersUF.find(3));
        }
 
    }
@@ -59,9 +60,11 @@ public:
    }
    DataCenterManagerError AddServer(int DataCenterID, int ServerID){
        if (DataCenterID > dataCentersSize) return INVALID_INPUT;
-       int dc_head = dataCentersUF.find(DataCenterID);
-       ServerAux sa_temp(ServerID, 0); //AKIVA: removed dc_head argument (why was that there?)
-       if (serversHT.find(sa_temp).getID() == 0){
+       int dc_head = dataCentersUF.find(DataCenterID-1);
+       //printf("headdd is %d", dc_head);
+       ServerAux sa_temp(ServerID, 0, dc_head);
+       if (serversHT.find(sa_temp).getID() != 0){
+           //this means the server already exists
            return FAILURE;
        }
        //check for allocation error
@@ -77,8 +80,8 @@ public:
            return FAILURE;
        }
        serversHT.remove(sa_result);
-       //int server_dc_id = sa_result.getDCID();
-       int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
+       int server_dc_id = sa_result.getDCID();
+       //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
        dataCentersArray[dc_head].DecrementSize();
        if (sa_result.getTraffic() > 0){
@@ -95,11 +98,13 @@ public:
        if (sa_result.getID() == 0){
            return FAILURE;
        }
-       //int server_dc_id = sa_result.getDCID();
-       int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
+       int server_dc_id = sa_result.getDCID();
+        //printf("dc_d is %d\n", server_dc_id);
+       //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
+        //printf("head is %d\n", dc_head);
         dataCentersArray[dc_head].SetTraffic(ServerID, traffic, sa_temp.getTraffic());
-       serversTree.remove(sa_result);
+       if (sa_temp.getTraffic()!=0) serversTree.remove(sa_result);
        serversTree.insert(sa_result);
        return SUCCESS;
    }
@@ -112,19 +117,19 @@ public:
 
            //if (k > dataCentersSize) return FAILURE; //
            int tree_size = serversTree.getTreeSize(); //AKIVA: replaced servers_tree with serversTree (including later mentions in this function)
-           Server max_server = serversTree[tree_size]; //AKIVA: replaced getMaxNode with [tree_size]
+           Server max_server = serversTree[tree_size-1]; //AKIVA: replaced getMaxNode with [tree_size]
            if (k >= tree_size) {
                *traffic = serversTree.getPartialSum(max_server);
                return SUCCESS;
            } else {
                k = tree_size - k;
-               Server kth_server = serversTree[k]; //AKIVA: replaced getKthNode with operator[]
+               Server kth_server = serversTree[k-1]; //AKIVA: replaced getKthNode with operator[]
                *traffic = serversTree.getPartialSum(max_server) - serversTree.getPartialSum(kth_server);
            }
        }
        else{
            //check no negative numbers sneak in here
-           int dc_head = dataCentersUF.find(dataCenterID);
+           int dc_head = dataCentersUF.find(dataCenterID-1);
            dataCentersArray[dc_head].SumHighestTrafficServers(k, traffic);
        }
        return SUCCESS;

@@ -16,15 +16,17 @@ private:
 protected: //DEBUGGING NOTE: Make public to be able to run the test currently in main
     int id;
     int traffic;
+    int dc_id;
 public:
-    explicit Server(int given_id = 0, int given_traffic = 0) :
-            id(given_id), traffic(given_traffic) {
+    explicit Server(int given_id = 0, int given_traffic = 0, int given_dc_id = 0) :
+            id(given_id), traffic(given_traffic), dc_id(given_dc_id) {
     }
     //destructor
     virtual ~Server()= default;
     void setTraffic(int given_traffic) { traffic = given_traffic;}
     int getTraffic() const {return traffic;}
     int getID() const {return id;}
+    int getDCID() const {return dc_id;}
     //operators
     bool operator==(const Server &server) const {
         return (server.id == id);
@@ -52,7 +54,7 @@ public:
     }
 
 public:
-    explicit ServerAux(int given_id = 0, int given_traffic = 0): Server(given_id,given_traffic){};
+    explicit ServerAux(int given_id = 0, int given_traffic = 0, int given_dc_id = 0): Server(given_id,given_traffic, given_dc_id){};
 };
 
 #endif //DATACENTERSMANAGER2_SERVER_H

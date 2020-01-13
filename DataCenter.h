@@ -15,7 +15,7 @@ public:
         servers_tree = servers_tree.merge(other.servers_tree);
         return *this;
     }
-//
+
     int id;
 
     void setID(int given_id) {
@@ -64,9 +64,9 @@ public:
     void SetTraffic(int ServerID, int new_traffic, int old_traffic) {
         //check in traffic and server number are legal
         //check server in hash table
-        Server old_server(ServerID, old_traffic);
-        servers_tree.remove(old_server);
-        Server new_server(ServerID, new_traffic);
+        Server old_server(ServerID, old_traffic, id);
+        if (old_traffic!=0) servers_tree.remove(old_server);
+        Server new_server(ServerID, new_traffic, id);
         servers_tree.insert(new_server);
         //servers_tree.insert(temp_server);
     }
@@ -76,18 +76,16 @@ public:
         //if (k > servers_num) return FAILURE;
         int tree_size = servers_tree.getTreeSize();
         Server max_server = servers_tree[tree_size-1];
-        printf("traffic is %d\n",max_server.getTraffic());
+        printf("traffic is %d\n",max_server.getID());
         if (k >= tree_size) {
             *traffic = servers_tree.getPartialSum(max_server);
             return SUCCESS;
         } else {
             k = tree_size - k;
-            Server kth_server = servers_tree[k];
+            Server kth_server = servers_tree[k-1];
             *traffic = servers_tree.getPartialSum(max_server) - servers_tree.getPartialSum(kth_server);
             return SUCCESS;
         }
-
-
     };
 
 };
