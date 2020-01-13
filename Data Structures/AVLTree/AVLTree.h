@@ -293,6 +293,7 @@ template<typename T>
 typename AVLTree<T>::BinTreeNodePtr
 removeRecursive(typename AVLTree<T>::BinTreeNodePtr rootPtr, const T &data) {
 
+    int numericalValue = (data + data) / 2;
     if (!rootPtr) throw DataManagerExceptions::ObjectUnfound();
     else if (data == rootPtr->data) {
         return destroy<T>(rootPtr);
@@ -301,6 +302,8 @@ removeRecursive(typename AVLTree<T>::BinTreeNodePtr rootPtr, const T &data) {
     } else {
         rootPtr->left = removeRecursive(rootPtr->left, data);
     }
+    rootPtr->sum -= numericalValue;
+    --(rootPtr->subTreeSize);
     return AVLTree<T>::fixBalance(*rootPtr);
 }
 
