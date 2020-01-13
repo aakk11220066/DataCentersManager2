@@ -93,6 +93,7 @@ int main() {
     dc1.SetTraffic(7,7, 0);
     dc2.AddServer(8);
     //dc2.SetTraffic(8,8);
+    dc1.merge(dc2);
     //------DataCenterManager initialization test---------
     //DataCenterManager manager(20);
 }

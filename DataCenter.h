@@ -61,14 +61,13 @@ public:
         }
     }
 
-    DataCenterError SetTraffic(int ServerID, int new_traffic, int old_traffic) {
+    void SetTraffic(int ServerID, int new_traffic, int old_traffic) {
         //check in traffic and server number are legal
         //check server in hash table
         Server temp_server(ServerID, old_traffic);
         Server &server_target = servers_tree.find(temp_server);
         server_target.setTraffic(new_traffic);
         //servers_tree.insert(temp_server);
-        return SUCCESS;
     }
 
     DataCenterError SumHighestTrafficServers(int k, int *traffic) {
