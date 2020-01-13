@@ -3,7 +3,7 @@
 //
 
 #include "DataCenterManager.h"
-#include "CInterface.h"
+#include "library2.h"
 
 void *Init(int n) {
     return new DataCenterManager(n);
