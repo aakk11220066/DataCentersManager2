@@ -1,4 +1,5 @@
 
+#include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
 #include "DataCenterManager.h"
 
@@ -84,7 +85,6 @@ int main() {
     delete[] trees;
     */
 
-
     DataCenter dc1(1);
     DataCenter dc2(2);
     dc1.AddServer(6);
@@ -92,5 +92,7 @@ int main() {
     dc1.AddServer(7);
     dc1.SetTraffic(7,7);
     dc2.AddServer(8);
-
+    //dc2.SetTraffic(8,8);
+    //------DataCenterManager initialization test---------
+    //DataCenterManager manager(20);
 }

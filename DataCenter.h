@@ -56,13 +56,12 @@ public:
         }
     }
 
-    DataCenterError SetTraffic(int ServerID, int traffic){
+    DataCenterError SetTraffic(int ServerID, int new_traffic, int old_traffic){
         //check in traffic and server number are legal
         //check server in hash table
-        Server temp_server(ServerID, traffic);
+        Server temp_server(ServerID, old_traffic);
         Server &server_target =servers_tree.find(temp_server);
-        server_target.setTraffic(traffic);
-        //printf("fgdfgdfgd\n");
+        server_target.setTraffic(new_traffic);
         //servers_tree.insert(temp_server);
     }
 
@@ -86,8 +85,8 @@ public:
 };
 
 DataCenter &DataCenter::merge(DataCenter &other) {
-    servers_tree = servers_tree.merge(other.servers_tree);
     servers_num += other.servers_num;
+    servers_tree = servers_tree.merge(other.servers_tree);
     //TODO: update anything else in DataCenter that needs to be updated in a merge
     return *this;
 }
