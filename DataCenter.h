@@ -68,6 +68,7 @@ public:
         Server &server_target = servers_tree.find(temp_server);
         server_target.setTraffic(new_traffic);
         //servers_tree.insert(temp_server);
+        return SUCCESS;
     }
 
     DataCenterError SumHighestTrafficServers(int k, int *traffic) {
