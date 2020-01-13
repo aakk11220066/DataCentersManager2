@@ -33,11 +33,16 @@ public:
        for (int i =1; i <= size; i++){
            dataCentersArray[i].setID(i);
        }
+
+       for (int i = 1; i<=size; i++){
+           printf("id is %d\n", dataCentersArray[i].id);
+       }
+
    }
    ~DataCenterManager(){
        delete[] dataCentersArray;
    }
-   DataCenterManagerError MergeDataCeneters(int dataCenter1, int dataCenter2) {
+   DataCenterManagerError MergeDataCenters(int dataCenter1, int dataCenter2) {
        if (dataCenter1 > dataCentersSize || dataCenter2 > dataCentersSize)
            return INVALID_INPUT;
        int dc1_head = dataCentersUF.find(dataCenter1);

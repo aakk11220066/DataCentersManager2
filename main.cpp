@@ -84,16 +84,21 @@ int main() {
 
     delete[] trees;
     */
-
+/*
     DataCenter dc1(1);
-    DataCenter dc2(2);
+    //DataCenter dc2(2);
     dc1.AddServer(6);
     dc1.SetTraffic(6,6, 0);
     dc1.AddServer(7);
     dc1.SetTraffic(7,7, 0);
-    dc2.AddServer(8);
-    //dc2.SetTraffic(8,8);
-    dc1.merge(dc2);
+    dc1.AddServer(8);
+    dc1.SetTraffic(8,8, 0);
+    //dc1.merge(dc2);
+    int tr_res;
+    dc1.SumHighestTrafficServers(1, &tr_res);
+    printf("tr_res is %d", tr_res);
     //------DataCenterManager initialization test---------
     //DataCenterManager manager(20);
+    */
+DataCenterManager dcm(5);
 }
