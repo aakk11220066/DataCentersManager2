@@ -18,8 +18,8 @@ public:
 
     int id;
 
-    void setID(int id) {
-        DataCenter::id = id;
+    void setID(int given_id) {
+        DataCenter::id = given_id;
     }
 
     int servers_num;
@@ -29,7 +29,7 @@ public:
     };
 public:
     //ctor
-    explicit DataCenter(int given_id = 0) : id(given_id), servers_num(0) {}
+    explicit DataCenter(int given_id = 0) : id(given_id), servers_num(3) {}
 
     void IncrementSize() { servers_num++; }
 
@@ -64,17 +64,19 @@ public:
     void SetTraffic(int ServerID, int new_traffic, int old_traffic) {
         //check in traffic and server number are legal
         //check server in hash table
-        Server temp_server(ServerID, old_traffic);
-        Server &server_target = servers_tree.find(temp_server);
-        server_target.setTraffic(new_traffic);
+        Server old_server(ServerID, old_traffic);
+        servers_tree.remove(old_server);
+        Server new_server(ServerID, new_traffic);
+        servers_tree.insert(new_server);
         //servers_tree.insert(temp_server);
     }
 
     DataCenterError SumHighestTrafficServers(int k, int *traffic) {
         //check k> 0
-        if (k > servers_num) return FAILURE;
+        //if (k > servers_num) return FAILURE;
         int tree_size = servers_tree.getTreeSize();
-        Server max_server = servers_tree[tree_size];
+        Server max_server = servers_tree[tree_size-1];
+        printf("traffic is %d\n",max_server.getTraffic());
         if (k >= tree_size) {
             *traffic = servers_tree.getPartialSum(max_server);
             return SUCCESS;
