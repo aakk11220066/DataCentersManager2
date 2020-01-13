@@ -54,7 +54,7 @@ public:
     }
 
 public:
-    explicit ServerAux(int given_id = 0, int given_traffic = 0, int given_dc_id = 0): Server(given_id,given_traffic){};
+    explicit ServerAux(int given_id = 0, int given_traffic = 0, int given_dc_id = 0): Server(given_id,given_traffic, given_dc_id){};
 };
 
 #endif //DATACENTERSMANAGER2_SERVER_H
