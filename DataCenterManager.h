@@ -16,7 +16,9 @@ class DataCenterManager {
 private:
     const int dataCentersSize;
 public:
-    int getDataCentersSize() const;
+    int getDataCentersSize() const {
+        return dataCentersSize;
+    }
 
 private:
     UnionFind dataCentersUF;
@@ -124,8 +126,5 @@ public:
    }
 };
 
-int DataCenterManager::getDataCentersSize() const {
-    return dataCentersSize;
-}
 
 #endif //DATACENTERSMANAGER2_DATACENTERMANAGER_H
