@@ -60,8 +60,10 @@ public:
         //check in traffic and server number are legal
         //check server in hash table
         Server temp_server(ServerID, traffic);
-        servers_tree.remove(temp_server);
-        servers_tree.insert(temp_server);
+        Server &server_target =servers_tree.find(temp_server);
+        server_target.setTraffic(traffic);
+        //printf("fgdfgdfgd\n");
+        //servers_tree.insert(temp_server);
     }
 
     DataCenterError SumHighestTrafficServers(int k, int *traffic){

@@ -85,8 +85,14 @@ int main() {
     delete[] trees;
     */
 
-    AVLTree<Server> tree;
-
+    DataCenter dc1(1);
+    DataCenter dc2(2);
+    dc1.AddServer(6);
+    dc1.SetTraffic(6,6);
+    dc1.AddServer(7);
+    dc1.SetTraffic(7,7);
+    dc2.AddServer(8);
+    //dc2.SetTraffic(8,8);
     //------DataCenterManager initialization test---------
-    DataCenterManager manager(20);
+    //DataCenterManager manager(20);
 }
