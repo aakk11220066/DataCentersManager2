@@ -63,5 +63,7 @@ StatusType SumHighestTrafficServers(void *DS, int dataCenterID, int k, int *traf
 }
 
 void Quit(void **DS) {
-    ((DataCenterManager *) DS)->~DataCenterManager();
+    if (!DS) return;
+    delete ((DataCenterManager *) *DS);
+    *DS = nullptr;
 }

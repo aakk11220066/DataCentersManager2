@@ -47,12 +47,13 @@ public:
         return head;
     }
 
-    void unite(int e1, int e2)	{
+    //returns head of union set
+    int unite(int e1, int e2) {
         int e1_head = find(e1);
         int e2_head = find(e2);
-        if (e1_head == e2_head) return;
+        if (e1_head == e2_head) return e1_head;
         int new_size = groups_array[e1_head].getSize() + groups_array[e2_head].getSize();
-        if (groups_array[e1_head].getSize() <= groups_array[e2_head].getSize()){
+        if (groups_array[e1_head].getSize() < groups_array[e2_head].getSize()) {
             groups_array[e1_head].setHead(e2_head);
             groups_array[e2_head].setSize(new_size);
         }
@@ -60,6 +61,7 @@ public:
             groups_array[e2_head].setHead(e1_head);
             groups_array[e1_head].setSize(new_size);
         }
+        return groups_array[e1_head].getHead();
     }
 
 };

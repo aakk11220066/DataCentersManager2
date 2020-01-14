@@ -73,11 +73,13 @@ public:
     }
 
     DataCenterError SumHighestTrafficServers(int k, int *traffic) {
-        //check k> 0
-        //if (k > servers_num) return FAILURE;
+        if (k == 0) { //AKIVA
+            *traffic = 0;
+            return SUCCESS;
+        }
+        if (k > servers_num) k = servers_num; //AKIVA
         int tree_size = servers_tree.getTreeSize();
         Server max_server = servers_tree[tree_size-1];
-        printf("traffic is %d\n",max_server.getID());
         if (k >= tree_size) {
             *traffic = servers_tree.getPartialSum(max_server);
             return SUCCESS;
