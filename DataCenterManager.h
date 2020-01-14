@@ -102,7 +102,9 @@ public:
         try {
             serversTree.remove(Server(sa_result));
         } catch (DataManagerExceptions::ObjectUnfound &e) {}
+        serversHT.remove(sa_result);
         sa_result.setTraffic(traffic);
+        serversHT.add(sa_result);
         serversTree.insert(Server(sa_result));
         return SUCCESS;
     }
