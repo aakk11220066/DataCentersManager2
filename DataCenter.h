@@ -78,8 +78,8 @@ public:
             *traffic = 0;
             return SUCCESS;
         }
-        if (k > servers_num) k = servers_num; //AKIVA
         int tree_size = servers_tree.getTreeSize();
+        if (k > tree_size) k = tree_size; //AKIVA
         Server max_server = servers_tree[tree_size-1];
         if (k >= tree_size) {
             *traffic = servers_tree.getPartialSum(max_server);
@@ -87,7 +87,9 @@ public:
         } else {
             k = tree_size - k;
             Server kth_server = servers_tree[k-1];
-            *traffic = servers_tree.getPartialSum(max_server) - servers_tree.getPartialSum(kth_server);
+            int sumOfTree = servers_tree.getPartialSum(max_server);
+            int partialSumUpToK = servers_tree.getPartialSum(kth_server);
+            *traffic = sumOfTree - partialSumUpToK;
             return SUCCESS;
         }
     };

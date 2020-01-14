@@ -9,6 +9,7 @@
 
 #include "BinarySearchTree.h"
 #include "../../DataManagerExceptions.h"
+#include <cassert>
 
 template <typename T>
 class AVLTree : public BinarySearchTree<T>{
@@ -34,6 +35,9 @@ private:
 
     //returns balance factor defined for standard AVL trees
     static int getBalanceFactor(typename BinaryTree<T>::BinaryTreeNode &node);
+
+    //fixes subTreeSize after rebalancing tree
+    static void correctRankSum(typename BinaryTree<T>::BinaryTreeNode &root, BinTreeNodePtr output);
 
     //--- FRIENDS ---
     //for BinTreeNodePtr, BinaryTreeNode type usage
@@ -134,22 +138,25 @@ typename AVLTree<T>::BinTreeNodePtr
 AVLTree<T>::rotateRR(typename BinaryTree<T>::BinaryTreeNode &root) {
 
     //first update sum and subTreeSize, then perform rotation
-    unsigned int originalRightSize = root.right->getSubtreeSize();
-    int originalRightSum = root.right->getSum();
+    //unsigned int originalRightSize = root.right->getSubtreeSize();
+    //int originalRightSum = root.right->getSum();
     //root.right gains root as a subtree, thus including root's entire left side
-    root.right->sum += root.getSum() - root.right->getSum();
-    root.right->subTreeSize += root.getSubtreeSize() - root.right->getSubtreeSize();
+    //root.right->sum += root.getSum() - root.right->getSum();
+    //root.right->subTreeSize += root.getSubtreeSize() - root.right->getSubtreeSize();
     //root now only has itself and its left subtree,
     // as well as root.right's left subtree
-    root.sum -= (originalRightSum -
-            ((root.right->left)? root.right->left->getSum() : 0));
-    root.subTreeSize -= (originalRightSize -
-            ((root.right->left)? root.right->left->getSubtreeSize() : 0));
+    //root.sum -= (originalRightSum -
+    //        ((root.right->left)? root.right->left->getSum() : 0));
+    //root.subTreeSize -= (originalRightSize -
+    //        ((root.right->left)? root.right->left->getSubtreeSize() : 0));
 
     AVLTree<T>::BinTreeNodePtr temp = root.right->left;
     AVLTree<T>::BinTreeNodePtr output = root.right;
     root.right->left = &root;
     root.right = temp;
+
+    correctRankSum(root, output);
+
     return output;
 }
 
@@ -158,22 +165,25 @@ typename AVLTree<T>::BinTreeNodePtr
 AVLTree<T>::rotateLL(typename BinaryTree<T>::BinaryTreeNode &root) {
 
     //first update sum and subTreeSize, then perform rotation
-    unsigned int originalLeftSize = root.left->getSubtreeSize();
-    int originalLeftSum = root.left->getSum();
+    //unsigned int originalLeftSize = root.left->getSubtreeSize();
+    //int originalLeftSum = root.left->getSum();
     //root.right gains root as a subtree, thus including root's entire left side
-    root.left->sum += root.getSum() - root.left->getSum();
-    root.left->subTreeSize += root.getSubtreeSize() - root.left->getSubtreeSize();
+    //root.left->sum += root.getSum() - root.left->getSum();
+    //root.left->subTreeSize += root.getSubtreeSize() - root.left->getSubtreeSize();
     //root now only has itself and its left subtree,
     // as well as root.right's left subtree
-    root.sum -= (originalLeftSum -
-                 ((root.left->right)? root.left->right->getSum() : 0));
-    root.subTreeSize -= (originalLeftSize -
-                           ((root.left->right)? root.left->right->getSubtreeSize() : 0));
+    //root.sum -= (originalLeftSum -
+    //             ((root.left->right)? root.left->right->getSum() : 0));
+    //root.subTreeSize -= (originalLeftSize -
+    //                       ((root.left->right)? root.left->right->getSubtreeSize() : 0));
 
     AVLTree<T>::BinTreeNodePtr temp = root.left->right;
     AVLTree<T>::BinTreeNodePtr output = root.left;
     root.left->right = &root;
     root.left = temp;
+
+    correctRankSum(root, output);
+
     return output;
 }
 
@@ -208,6 +218,8 @@ AVLTree<T>::fixBalance(typename BinaryTree<T>::BinaryTreeNode &root) {
     } else if (getBalanceFactor(*(root.right)) == 1) output = rotateRL(root);
     else output = rotateRR(root);
 
+    correctRankSum(root, output);
+
     root.getHeight(); //update height
     return output;
 }
@@ -229,12 +241,10 @@ insertRecursive(typename AVLTree<T>::BinTreeNodePtr rootPtr, const T &data) {
     if (data > rootPtr->data) { //go right
         rootPtr->right = insertRecursive(rootPtr->right, data);
         rootPtr->sum += numericalValue; //if succeeded, add value to sum
-        ++(rootPtr->subTreeSize); //increment size of subtree
         return AVLTree<T>::fixBalance(*rootPtr);
     }
     rootPtr->left = insertRecursive(rootPtr->left, data); //go left
     rootPtr->sum += numericalValue;
-    ++(rootPtr->subTreeSize);
     return AVLTree<T>::fixBalance(*rootPtr);
 }
 
@@ -406,6 +416,25 @@ Array<int> AVLTree<T>::postOrderSumRankModify(typename BinaryTree<T>::BinaryTree
     output[1] = root->subTreeSize = 1 + leftInfoPair[1] + rightInfoPair[1];
 
     return output;
+}
+
+template<typename T>
+void AVLTree<T>::correctRankSum(typename BinaryTree<T>::BinaryTreeNode &root, BinTreeNodePtr output) {
+    //subTreeSize correction zone
+    unsigned int rootLeftSubTreeSize = (root.left) ? root.left->subTreeSize : 0;
+    unsigned int rootRightSubTreeSize = (root.right) ? root.right->subTreeSize : 0;
+    root.subTreeSize = 1 + rootLeftSubTreeSize + rootRightSubTreeSize;
+    unsigned int outputLeftSubTreeSize = (output->left) ? output->left->subTreeSize : 0;
+    unsigned int outputRightSubTreeSize = (output->right) ? output->right->subTreeSize : 0;
+    output->subTreeSize = 1 + outputLeftSubTreeSize + outputRightSubTreeSize;
+
+    //sum correction zone
+    unsigned int rootLeftSum = (root.left) ? root.left->sum : 0;
+    unsigned int rootRightSum = (root.right) ? root.right->sum : 0;
+    root.sum = (root.data + root.data) / 2 + rootLeftSum + rootRightSum;
+    unsigned int outputLeftSum = (output->left) ? output->left->sum : 0;
+    unsigned int outputRightSum = (output->right) ? output->right->sum : 0;
+    output->sum = (output->data + output->data) / 2 + outputLeftSum + outputRightSum;
 }
 
 
