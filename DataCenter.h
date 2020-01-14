@@ -61,13 +61,13 @@ public:
         }
     }
 
-    void SetTraffic(int ServerID, int new_traffic, int old_traffic) {
+    void SetTraffic(const Server &server, int new_traffic) {
         //check in traffic and server number are legal
         //check server in hash table
-        Server old_server(ServerID, old_traffic, id);
-        //if (old_traffic!=0)
-            servers_tree.remove(old_server);
-        Server new_server(ServerID, new_traffic, id);
+        Server old_server(server.getID(), server.getTraffic(), id);
+        if (!server.getIsInTree()) servers_tree.remove(old_server);
+        Server new_server(server.getID(), new_traffic, id);
+        new_server.setIsInTree(true);
         servers_tree.insert(new_server);
         //servers_tree.insert(temp_server);
     }

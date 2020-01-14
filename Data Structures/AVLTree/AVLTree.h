@@ -19,6 +19,10 @@ private:
     T &operatorSubscriptRecursive(typename BinaryTree<T>::BinaryTreeNode *root,
                                   unsigned int index);
 
+    //recursively updates every element of subtree to have proper sum and rank.
+    //returns 2-tuple containing (sum, rank) of root
+    Array<int> postOrderSumRankModify(typename BinaryTree<T>::BinaryTreeNode *root);
+
     //node rotations
     static BinTreeNodePtr rotateRR(typename BinaryTree<T>::BinaryTreeNode &root);
     static BinTreeNodePtr rotateLL(typename BinaryTree<T>::BinaryTreeNode &root);
@@ -79,7 +83,7 @@ public:
     AVLTree &operator=(const AVLTree &original) = default;
 
     //conversion constructor from BinarySearchTree to AVLTree
-    AVLTree(const BinarySearchTree<T> &original);
+    explicit AVLTree(const BinarySearchTree<T> &original);
 
     //insert
     void insert(const T& data);
@@ -104,6 +108,10 @@ public:
 
     /// \return number of elements in tree
     int getTreeSize();
+
+    /// \param tree - tree to merge with this tree
+    /// \return merged trees, with sum and rank updated
+    virtual AVLTree merge(const AVLTree &tree);
 };
 
 
@@ -373,6 +381,31 @@ T &AVLTree<T>::operatorSubscriptRecursive(
 template<typename T>
 int AVLTree<T>::getTreeSize() {
     return this->getSize();
+}
+
+template<typename T>
+AVLTree<T> AVLTree<T>::merge(const AVLTree<T> &tree) {
+    BinarySearchTree<T> unmodifiedTree = this->BinarySearchTree<T>::merge(tree);
+    postOrderSumRankModify(unmodifiedTree.root);
+    return AVLTree(unmodifiedTree);
+}
+
+template<typename T>
+Array<int> AVLTree<T>::postOrderSumRankModify(typename BinaryTree<T>::BinaryTreeNode *root) {
+    Array<int> output(2);
+
+    if (!root) {
+        output[0] = output[1] = 0;
+        return output;
+    }
+
+    Array<int> leftInfoPair = postOrderSumRankModify(root->left);
+    Array<int> rightInfoPair = postOrderSumRankModify(root->right);
+
+    output[0] = root->sum = ((root->data + root->data) / 2) + leftInfoPair[0] + rightInfoPair[0];
+    output[1] = root->subTreeSize = 1 + leftInfoPair[1] + rightInfoPair[1];
+
+    return output;
 }
 
 

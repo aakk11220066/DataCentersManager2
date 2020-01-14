@@ -86,9 +86,9 @@ private:
 
     virtual unsigned int updateSubTreeSizeRecursive(BinaryTreeNode *root);
 
-protected:
+public:
     BinaryTreeNode *root = nullptr;
-
+protected:
     //get Array of nodes inorder
     Array<BinaryTreeNode *> getNodesInOrder() const;
 

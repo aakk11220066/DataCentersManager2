@@ -13,6 +13,16 @@ private:
 
     DataCenter &getContainingDataCenter();
 
+    bool isInTree = false;
+public:
+    bool getIsInTree() const {
+        return isInTree;
+    }
+
+    void setIsInTree(bool isInTree) {
+        Server::isInTree = isInTree;
+    }
+
 protected: //DEBUGGING NOTE: Make public to be able to run the test currently in main
     int id;
     int traffic;
@@ -23,7 +33,11 @@ public:
     }
     //destructor
     virtual ~Server()= default;
-    void setTraffic(int given_traffic) { traffic = given_traffic;}
+
+    void setTraffic(int given_traffic) {
+        traffic = given_traffic;
+        isInTree = true;
+    }
     int getTraffic() const {return traffic;}
     int getID() const {return id;}
     int getDCID() const {return dc_id;}

@@ -84,7 +84,7 @@ public:
        //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
        dataCentersArray[dc_head].DecrementSize();
-       if (sa_result.getTraffic() > 0){
+       if (sa_result.getIsInTree()) {
            dataCentersArray[dc_head].RemoveServer(ServerID);
            serversTree.remove(sa_result);
        }
@@ -95,7 +95,7 @@ public:
        //check traffic and server are legal....
        ServerAux sa_temp(ServerID);
        ServerAux sa_result = serversHT.find(sa_temp);
-       if (sa_result.getID() == 0){
+        if (!sa_result.getIsInTree()) {
            return FAILURE;
        }
        int server_dc_id = sa_result.getDCID();
@@ -103,8 +103,9 @@ public:
        //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
         //printf("head is %d\n", dc_head);
-        dataCentersArray[dc_head].SetTraffic(ServerID, traffic, sa_temp.getTraffic());
-       if (sa_result.getTraffic()!=0) serversTree.remove(sa_result);
+        dataCentersArray[dc_head].SetTraffic(sa_result, traffic);
+        if (sa_result.getIsInTree()) serversTree.remove(sa_result);
+        sa_result.setIsInTree(true);
        sa_result.setTraffic(traffic);
        serversTree.insert(sa_result);
        return SUCCESS;

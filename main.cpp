@@ -2,10 +2,10 @@
 #include "Data Structures/AVLTree/AVLTree.h"
 #include "Server.h"
 #include "DataCenterManager.h"
-#include "Data Structures/UnionFind.h"
-//using std::cout;
-//using std::endl;
-#include "library2.h"
+
+using std::cout;
+using std::endl;
+
 int main() {
     /*
     //AVLTree sum, rank test (passed)
@@ -88,17 +88,18 @@ int main() {
     DataCenter dc1(1);
     DataCenter dc2(2);
     dc1.AddServer(6);
-    dc1.SetTraffic(6,6, 0);
+    dc1.SetTraffic(Server(6, 0, 1), 6);
     dc1.AddServer(7);
-    dc1.SetTraffic(7,7, 0);
-    dc2.AddServer(8);
-    dc2.SetTraffic(8,8, 0);
+    dc1.SetTraffic(Server(7, 0, 1), 7);
+    dc1.AddServer(8);
+    dc1.SetTraffic(Server(8, 0, 1), 8);
+    dc2.AddServer(9);
+    dc2.SetTraffic(Server(9, 0, 2), 9);
     dc1.merge(dc2);
-    int b = 3;
-
-    //int tr_res;
-    //dc1.SumHighestTrafficServers(1, &tr_res);
-    //printf("tr_res is %d", tr_res);
+    int tr_res;
+    dc1.SumHighestTrafficServers(1, &tr_res);
+    printf("tr_res is %d\n", tr_res);
+    cout << "merge followed by sumHighestTrafficServers test complete." << endl;
     //------DataCenterManager initialization test---------
     //DataCenterManager manager(20);
 
