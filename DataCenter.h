@@ -48,7 +48,7 @@ public:
         }
     }
 
-    void RemoveServer(Server targetServer) {
+    void RemoveServer(const Server &targetServer) {
         //check in outer layers that the id is correct
         try {
             servers_num--;
@@ -73,12 +73,12 @@ public:
     }
 
     DataCenterError SumHighestTrafficServers(int k, int *traffic) {
+        int tree_size = servers_tree.getTreeSize();
+        if (k > tree_size) k = tree_size; //AKIVA
         if (k == 0) { //AKIVA
             *traffic = 0;
             return SUCCESS;
         }
-        int tree_size = servers_tree.getTreeSize();
-        if (k > tree_size) k = tree_size; //AKIVA
         Server max_server = servers_tree[tree_size-1];
         if (k >= tree_size) {
             *traffic = servers_tree.getPartialSum(max_server);
