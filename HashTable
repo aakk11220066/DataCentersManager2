@@ -82,12 +82,10 @@ public:
         do{
             try {
                 sa_temp = table_array[cell%array_size].find(given_sa);
-                std::cout << "sa_temp found." << std::endl;
                 return sa_temp;
             }
             catch (DataManagerExceptions::ObjectUnfound &e){
                 cell++;
-                std::cout << "sa_temp unfound." << std::endl;
             }
         }
         while(cell%array_size != remainder);

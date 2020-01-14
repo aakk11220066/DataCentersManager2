@@ -80,10 +80,10 @@ public:
        //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
        dataCentersArray[dc_head].DecrementSize();
-       if (sa_result.getIsInTree()) {
+       try {
            dataCentersArray[dc_head].RemoveServer(ServerID);
            serversTree.remove(sa_result);
-       }
+       } catch (DataManagerExceptions::ObjectUnfound &e) {}
        return SUCCESS;
    }
 
@@ -98,12 +98,12 @@ public:
         int server_dc_id = sa_result.getDCID();
         //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
         int dc_head = dataCentersUF.find(server_dc_id);
-        //printf("head is %d\n", dc_head);
         dataCentersArray[dc_head].SetTraffic(sa_result, traffic);
-        if (sa_result.getIsInTree()) serversTree.remove(sa_result);
-        sa_result.setIsInTree(true);
+        try {
+            serversTree.remove(Server(sa_result));
+        } catch (DataManagerExceptions::ObjectUnfound &e) {}
         sa_result.setTraffic(traffic);
-        serversTree.insert(sa_result);
+        serversTree.insert(Server(sa_result));
         return SUCCESS;
     }
 

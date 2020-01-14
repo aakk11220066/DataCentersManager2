@@ -48,16 +48,16 @@ public:
         }
     }
 
-    DataCenterError RemoveServer(int ServerID) {
+    void RemoveServer(int ServerID) {
         //check in outer layers that the id is correct
         Server temp_server(ServerID);
         try {
-            servers_tree.remove(temp_server);
             servers_num--;
-            return SUCCESS;
+            servers_tree.remove(temp_server);
+            return;
         }
         catch (DataManagerExceptions::Exceptions &e) {
-            return FAILURE;
+            return;
         }
     }
 
@@ -65,9 +65,10 @@ public:
         //check in traffic and server number are legal
         //check server in hash table
         Server old_server(server.getID(), server.getTraffic(), id);
-        if (server.getIsInTree()) servers_tree.remove(old_server);
+        try {
+            servers_tree.remove(old_server);
+        } catch (DataManagerExceptions::ObjectUnfound &e) {}
         Server new_server(server.getID(), new_traffic, id);
-        new_server.setIsInTree(true);
         servers_tree.insert(new_server);
         //servers_tree.insert(temp_server);
     }
