@@ -352,6 +352,7 @@ int main() {
     assert(s == SUCCESS && sum == 12);
     s = SumHighestTrafficServers(*DS, 3, 2, &sum);
     assert(s == SUCCESS && sum == 23);
+    //
     s = SumHighestTrafficServers(*DS, 3, 3, &sum);
     assert(s == SUCCESS && sum == 30);
     s = SumHighestTrafficServers(*DS, 3, 4, &sum);
