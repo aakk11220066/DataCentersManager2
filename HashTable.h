@@ -75,23 +75,24 @@ public:
         //std::mt19937 engine(rd());
         //std::uniform_int_distribution<int> dist(0, array_size);
         //int cell = dist(engine);
-        //int cell = 0;
-        //int remainder = cell;
+        int cell = rand() % array_size;
+        int remainder = cell;
         ServerAux sa_temp(0);
-        for (int cell =0; cell<=array_size; cell++){
-            //do{
+        do{
             try {
                 sa_temp = table_array[cell%array_size].find(given_sa);
                 return sa_temp;
             }
             catch (DataManagerExceptions::ObjectUnfound &e){
-                //cell++;
+                cell++;
             }
         }
-        //while(cell%array_size != array_size);
+        while(cell%array_size != remainder);
         return sa_temp;
 //
     }
+
+
 
 };
 
