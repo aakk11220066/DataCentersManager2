@@ -57,7 +57,6 @@ public:
    DataCenterManagerError AddServer(int DataCenterID, int ServerID){
        if (DataCenterID > dataCentersSize) return INVALID_INPUT;
        int dc_head = dataCentersUF.find(DataCenterID-1);
-       //printf("headdd is %d", dc_head);
        ServerAux sa_temp(ServerID, 0, dc_head);
        if (serversHT.find(sa_temp).getID() != 0){
            //this means the server already exists
