@@ -8,7 +8,7 @@
 
 #include "DataCenter.h"
 #include "Data Structures/AVLTree/AVLTree.h"
-#include "HashTable"
+#include "HashTable.h"
 #include "Server.h"
 #include "Data Structures/UnionFind.h"
 // we may need to wrap up some lines with try-catch in order to handling allocation errors
@@ -113,7 +113,7 @@ public:
            *traffic = 0;
            return SUCCESS;
        }
-       if (k > serversHT.getSize()) k = serversHT.getSize(); //AKIVA
+       //if (k > serversHT.getSize()) k = serversHT.getSize(); //AKIVA
        if (dataCenterID > dataCentersSize) return INVALID_INPUT;
        if (dataCenterID == 0) {
            //copied from the respective function in DataCenter

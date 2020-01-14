@@ -71,27 +71,27 @@ public:
     }
 
     ServerAux find(ServerAux& given_sa) const{
-        std::random_device rd;
-        std::mt19937 engine(rd());
-        std::uniform_int_distribution<int> dist(0, array_size);
-        int cell = dist(engine);
-        int remainder = cell;
+        //std::random_device rd;
+        //std::mt19937 engine(rd());
+        //std::uniform_int_distribution<int> dist(0, array_size);
+        //int cell = dist(engine);
+        //int cell = 0;
+        //int remainder = cell;
         ServerAux sa_temp(0);
-        do{
+        for (int cell =0; cell<=array_size; cell++){
+            //do{
             try {
                 sa_temp = table_array[cell%array_size].find(given_sa);
                 return sa_temp;
             }
             catch (DataManagerExceptions::ObjectUnfound &e){
-                cell++;
+                //cell++;
             }
         }
-        while(cell%array_size != remainder);
+        //while(cell%array_size != array_size);
         return sa_temp;
 //
     }
-
-
 
 };
 
