@@ -1,7 +1,7 @@
 
 #include "Data Structures/AVLTree/AVLTree.h"
-#include "Server.h"
 #include "DataCenterManager.h"
+#include "library2.h"
 
 using std::cout;
 using std::endl;
@@ -85,7 +85,7 @@ int main() {
     delete[] trees;
     */
 
-    DataCenter dc1(1);
+    /*DataCenter dc1(1);
     DataCenter dc2(2);
     dc1.AddServer(6);
     dc1.SetTraffic(Server(6, 0, 1), 6);
@@ -99,14 +99,14 @@ int main() {
     int tr_res;
     dc1.SumHighestTrafficServers(1, &tr_res);
     printf("tr_res is %d\n", tr_res);
-    cout << "merge followed by sumHighestTrafficServers test complete." << endl;
+    cout << "merge followed by sumHighestTrafficServers test complete." << endl;*/
     //------DataCenterManager initialization test---------
     //DataCenterManager manager(20);
 
-/*
-DataCenterManager dcm(5);
-int res = dcm.AddServer(2,4);
-printf("it is %d\n", res);
+    /*
+    DataCenterManager dcm(5);
+    int res = dcm.AddServer(2,4);
+    printf("it is %d\n", res);
     res = dcm.AddServer(3,4);
     printf("it is %d\n", res);
     res = dcm.RemoveServer(3);
@@ -122,8 +122,30 @@ printf("it is %d\n", res);
     //int res = dcm.AddServer(2,4);
     */
 
-//int a =5;
+    //int a =5;
 
+    //-----main2 tests-----
+    auto ds = Init(10);
+    AddServer(ds, 1, 1);
+    AddServer(ds, 2, 1);
+    AddServer(ds, 2, 2);
+    SetTraffic(ds, 1, 10);
+    SetTraffic(ds, 2, 20);
+    int *output = new int;
+    SumHighestTrafficServers(ds, 1, 2, output);
+    cout << "SumHighestTrafficServers returned " << *output << endl;
+    SumHighestTrafficServers(ds, 2, 2, output);
+    cout << "SumHighestTrafficServers returned " << *output << endl;
+    SumHighestTrafficServers(ds, 0, 2, output);
+    cout << "SumHighestTrafficServers returned " << *output << endl;
+    MergeDataCenters(ds, 1, 2);
+    SumHighestTrafficServers(ds, 1, 2, output);
+    cout << "SumHighestTrafficServers returned " << *output << endl;
+    SumHighestTrafficServers(ds, 2, 2, output);
+    cout << "SumHighestTrafficServers returned " << *output << endl;
+    SumHighestTrafficServers(ds, 0, 2, output);
+    cout << "SumHighestTrafficServers returned " << *output << endl;
+    Quit(&ds);
 
-
+    delete (output);
 }

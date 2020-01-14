@@ -9,7 +9,6 @@ private:
     int array_size;
     int elements_size;
     bool wasIncreased;
-    // to be updated to Servers instead of ints
     AVLTree<ServerAux>* table_array;
 public:
     //ctor

@@ -33,12 +33,6 @@ public:
        for (int i =0; i < size; i++){
            dataCentersArray[i].setID(i);
        }
-
-       for (int i = 0; i<size; i++){
-           printf("id is %d\n", dataCentersArray[i].id);
-           //printf("temp res is %d\n", dataCentersUF.find(3));
-       }
-
    }
    ~DataCenterManager(){
        delete[] dataCentersArray;
@@ -95,9 +89,9 @@ public:
        //check traffic and server are legal....
        ServerAux sa_temp(ServerID);
        ServerAux sa_result = serversHT.find(sa_temp);
-        if (!sa_result.getIsInTree()) {
+        /*if (!sa_result.getIsInTree()) {
            return FAILURE;
-       }
+       }*/
        int server_dc_id = sa_result.getDCID();
         //printf("dc_d is %d\n", server_dc_id);
        //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
