@@ -104,7 +104,8 @@ public:
        int dc_head = dataCentersUF.find(server_dc_id);
         //printf("head is %d\n", dc_head);
         dataCentersArray[dc_head].SetTraffic(ServerID, traffic, sa_temp.getTraffic());
-       if (sa_temp.getTraffic()!=0) serversTree.remove(sa_result);
+       if (sa_result.getTraffic()!=0) serversTree.remove(sa_result);
+       sa_result.setTraffic(traffic);
        serversTree.insert(sa_result);
        return SUCCESS;
    }

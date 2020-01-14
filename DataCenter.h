@@ -65,7 +65,8 @@ public:
         //check in traffic and server number are legal
         //check server in hash table
         Server old_server(ServerID, old_traffic, id);
-        if (old_traffic!=0) servers_tree.remove(old_server);
+        //if (old_traffic!=0)
+            servers_tree.remove(old_server);
         Server new_server(ServerID, new_traffic, id);
         servers_tree.insert(new_server);
         //servers_tree.insert(temp_server);
