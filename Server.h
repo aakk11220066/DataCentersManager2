@@ -36,7 +36,8 @@ public:
     bool operator==(const Server &server) const {
         return (server.id == id);
     }
-    virtual bool operator> (const Server &server) const {
+
+    bool operator>(const Server &server) const {
         if (traffic > server.traffic) return true;
         if (traffic < server.traffic) return false;
         if (traffic == server.traffic){
@@ -54,7 +55,8 @@ public:
 class ServerAux: public Server {
 public:
     ~ServerAux() override = default;
-    bool operator> (const Server &server) const override {
+
+    bool operator>(const Server &server) const {
         return id>server.getID();
     }
 

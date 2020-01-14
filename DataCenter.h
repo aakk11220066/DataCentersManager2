@@ -48,12 +48,11 @@ public:
         }
     }
 
-    void RemoveServer(int ServerID) {
+    void RemoveServer(Server targetServer) {
         //check in outer layers that the id is correct
-        Server temp_server(ServerID);
         try {
             servers_num--;
-            servers_tree.remove(temp_server);
+            servers_tree.remove(targetServer);
             return;
         }
         catch (DataManagerExceptions::Exceptions &e) {

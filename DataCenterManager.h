@@ -79,9 +79,8 @@ public:
        int server_dc_id = sa_result.getDCID();
        //int server_dc_id = sa_result.getID(); //AKIVA: replaced commented-out line with this one
        int dc_head = dataCentersUF.find(server_dc_id);
-       dataCentersArray[dc_head].DecrementSize();
        try {
-           dataCentersArray[dc_head].RemoveServer(ServerID);
+           dataCentersArray[dc_head].RemoveServer(sa_result);
            serversTree.remove(sa_result);
        } catch (DataManagerExceptions::ObjectUnfound &e) {}
        return SUCCESS;
