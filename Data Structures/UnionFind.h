@@ -34,7 +34,9 @@ public:
     ~UnionFind() {
         delete[] groups_array;
     }
-
+    // find element's corresponding set number
+    // the function first gets the correct set number and then updates all indexes' head number
+    // along 'group_array'
     int find(int element)	{
         int head = element;
         while (head != groups_array[head].getHead())
@@ -48,6 +50,9 @@ public:
     }
 
     //returns head of union set
+    // in unison, the lesser-sized element's head becomes the pther elements one.
+    // in addition, the larger-sized element gets updates to the sum of both elements' sizes, prior to the change.
+    // in case both sizes matter, the function chooses the later elements as the one with the bigger size for unison.
     int unite(int e1, int e2) {
         int e1_head = find(e1);
         int e2_head = find(e2);
